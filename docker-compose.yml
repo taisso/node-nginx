@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  app:
+    tty: true
+    container_name: node-app
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
+    command: yarn start
+    build:
+      context: ./server
+    networks:
+      - node-nginx
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+
+  nginx:
+    restart: always
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+    networks:
+      - node-nginx
+
+  db:
+    image: mysql:8
+    # command not recommended for production
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    container_name: db
+    tty: true
+    environment:
+      MYSQL_DATABASE: nodedb
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    networks:
+      - node-nginx
+
+networks:
+  node-nginx:
+    driver: bridge
