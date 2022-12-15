@@ -13,14 +13,14 @@ services:
     depends_on:
       - db
     ports:
-      - "8080:8080"
+      - "3000:3000"
 
   nginx:
     restart: always
     build:
       context: ./nginx
     ports:
-      - "80:80"
+      - "8080:80"
     networks:
       - node-nginx
 

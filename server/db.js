@@ -15,10 +15,6 @@ export class MysqlConnection {
     this.#connection = mysql.createConnection(config);
   }
 
-  connect() {
-    this.#connection.connect()
-  }
-
   getQuery() {
     return promisify(this.#connection.query.bind(this.#connection));
   }

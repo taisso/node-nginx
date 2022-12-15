@@ -2,9 +2,8 @@ import express from "express";
 import { MysqlConnection } from "./db.js";
 
 const app = express();
-const port = 8080;
+const port = 3000;
 const mysqlConnection = new MysqlConnection();
-mysqlConnection.connect();
 
 const insertPeople = (queryFunc) => {
   const sql = `INSERT INTO people (name) VALUES('Pedro'), ('Ana'), ('Bia')`;
@@ -28,9 +27,8 @@ const getFormatPeople = (results) => {
 app.get("/", async (_req, res) => {
   const query = mysqlConnection.getQuery();
   insertPeople(query)
-
+  
   return getPeopleList(query).then((data) => {
-    mysqlConnection.end();
     return res.send(`
       <h1>Full Cycle Rocks!</h1>
       </br>

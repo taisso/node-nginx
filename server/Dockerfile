@@ -19,5 +19,3 @@ USER node
 RUN yarn install
 
 COPY --chown=node:node . .
-
-EXPOSE 8080
